@@ -16,7 +16,8 @@ def initialize_db():
     color TEXT NOT NULL,
     season TEXT NOT NULL,
     occasion TEXT NOT NULL,
-    image_path TEXT)"""
+    image_path TEXT,
+    UNIQUE (name, category))"""
     cursor.execute(query)
     con.commit()
     con.close()

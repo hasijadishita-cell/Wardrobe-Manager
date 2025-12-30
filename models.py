@@ -1,5 +1,6 @@
 from database import get_connection
 import random
+import sqlite3
 
 valid_categories=["top","bottom","shoes"]
 valid_seasons=["summer","winter","fall","all"]
@@ -24,7 +25,14 @@ def get_item_by_id(item_id):
     result = cur.fetchone()
     conn.close()
     return result
-    
+def get_all_items():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM items")
+    items = cur.fetchall()
+    conn.close()
+    return items
+
 def compatible_color(c1,c2):
     g1=color_group(c1)
     g2=color_group(c2)
@@ -38,12 +46,17 @@ def compatible_color(c1,c2):
 
 def add_items(name, category,color,season,occasion,image_path=None):
     con=get_connection()
-    cursor=con.cursor()
+    try:
+        cursor=con.cursor()
 
-    cursor.execute("""INSERT INTO items(name,category,color,season,occasion,image_path) 
+        cursor.execute("""INSERT INTO items(name,category,color,season,occasion,image_path) 
                    values(?,?,?,?,?,?)""",(name,category,color,season,occasion,image_path))
-    con.commit()
-    con.close()
+        con.commit()
+        con.close()
+        return True
+    except sqlite3.IntegrityError as e:
+        return False
+    
 
 
 def list_items():
@@ -64,7 +77,7 @@ def delete_items(id):
     con.commit()
     con.close()
 
-def update_item(name,category,color,season,occasion,id,image_path=None):
+def update_item(id,name,category,color,season,occasion,image_path=None):
     con=get_connection()
     cursor=con.cursor()
 

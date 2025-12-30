@@ -19,8 +19,8 @@ def main():
             name=input("ENTER NAME OF THE ITEM: ")
             category=input("ENTER CATEGORY OF THE ITEM: ")
             color=input("ENTER COLOR OF THE ITEM: ")
-            season=input("ENTER THE SEASON YOU CAN WEAR THE ITEM: ")
-            occasion=input("ENTER OCCASION OF THE ITEM: ")
+            season=input("ENTER THE SEASON YOU CAN WEAR THE ITEM (SUMMER/WINTER/FALL/ALL): ")
+            occasion=input("ENTER OCCASION OF THE ITEM (CASUAL/PARTY/FORMAL): ")
             add_items(name,category,color,season,occasion)
             print("ITEM ADDED!!")
         elif ch==2:
@@ -69,19 +69,31 @@ def main():
         elif ch==5:
             name=input("ENTER NAME KEYWORD: ")
             record=search_name(name)
-            print("\n------------------YOUR ITEMS--------------------")
-            for item in record:
-                print(f"ID: {item[0]}")
-                print(f"NAME: {item[1]}")
-                print(f"CATEGORY: {item[2]}")
-                print(f"COLOR: {item[3]}")
-                print(f"SEASON: {item[4]}")
-                print(f"OCCASION: {item[5]}")
-                print(f"IMAGE: {item[6]}")
-                print("-------------------------------------------------")
+            if len(record)==0:
+                print("NO ITEMS FOUND!!")
+            else:
+                print("\n------------------YOUR ITEMS--------------------")
+                for item in record:
+                    print(f"ID: {item[0]}")
+                    print(f"NAME: {item[1]}")
+                    print(f"CATEGORY: {item[2]}")
+                    print(f"COLOR: {item[3]}")
+                    print(f"SEASON: {item[4]}")
+                    print(f"OCCASION: {item[5]}")
+                    print(f"IMAGE: {item[6]}")
+                    print("-------------------------------------------------")
         elif ch==6:
+            valid_seasons=["summer","winter","fall","all"]
+            valid_occasion=["casual","party","formal"]
+
             season=input("ENTER SEASON (SUMMER/WINTER/FALL/ALL): ")
+            while season not in valid_seasons:
+                print("INVALID SEASON! TRY AGAIN")
+                season=input("ENTER SEASON (SUMMER/WINTER/FALL/ALL): ")
             occasion=input("ENTER OCCASION (CASUAL/PARTY/FORMAL): ")
+            while occasion not in valid_occasion:
+                print("INVALID OCCASION! TRY AGAIN")
+                occasion=input("ENTER OCCASION (CASUAL/PARTY/FORMAL): ")
             suggest_outfit(season,occasion)
            
         elif ch==7:
